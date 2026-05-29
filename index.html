@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nikunj Pro Games — Play Free. Play Epic.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-1: #8B00FF;
+      --purple-2: #6A0DAD;
+      --blue-1: #00BFFF;
+      --blue-2: #0047AB;
+      --bg: #0a0a0f;
+      --bg2: #0e0e1a;
+      --glass: rgba(255,255,255,0.05);
+      --glass-border: rgba(139,0,255,0.4);
+      --text: #e8e8ff;
+      --text-dim: #9999bb;
+      --neon-purple: 0 0 8px #8B00FF, 0 0 20px #8B00FF, 0 0 40px #6A0DAD;
+      --neon-blue: 0 0 8px #00BFFF, 0 0 20px #00BFFF, 0 0 40px #0047AB;
+      --neon-mixed: 0 0 8px #8B00FF, 0 0 20px #00BFFF, 0 0 40px #8B00FF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       PARTICLE CANVAS
+    ============================================================ */
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       SYNTHWAVE BACKGROUND CANVAS
+    ============================================================ */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ============================================================
+       SCROLLBAR
+    ============================================================ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(var(--purple-1), var(--blue-1)); border-radius: 3px; }
+
+    /* ============================================================
+       TYPOGRAPHY UTILITIES
+    ============================================================ */
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+    .glow-purple {
+      text-shadow: var(--neon-purple);
+      color: #bf7fff;
+    }
+    .glow-blue {
+      text-shadow: var(--neon-blue);
+      color: #7fe8ff;
+    }
+    .glow-mixed {
+      text-shadow: var(--neon-mixed);
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(90deg, var(--purple-1), var(--blue-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+    .section-underline {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--purple-1), var(--blue-1));
+      margin: 0 auto 2.5rem;
+      border-radius: 2px;
+      box-shadow: 0 0 12px var(--purple-1), 0 0 24px var(--blue-1);
+      animation: underline-pulse 2s ease-in-out infinite;
+    }
+    @keyframes underline-pulse {
+      0%,100% { box-shadow: 0 0 12px var(--purple-1), 0 0 24px var(--blue-1); }
+      50% { box-shadow: 0 0 20px var(--purple-1), 0 0 40px var(--blue-1), 0 0 60px var(--purple-1); }
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.65rem 1.6rem;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -60%;
+      width: 40%; height: 200%;
+      background: rgba(255,255,255,0.15);
+      transform: skewX(-20deg);
+      transition: left 0.4s;
+    }
+    .btn:hover::before { left: 120%; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple-1), var(--blue-2));
+      color: #fff;
+      box-shadow: 0 0 12px var(--purple-1);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 20px var(--purple-1), 0 0 40px var(--blue-1);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--blue-1);
+      color: var(--blue-1);
+      box-shadow: 0 0 8px var(--blue-1);
+    }
+    .btn-outline:hover {
+      background: rgba(0,191,255,0.1);
+      box-shadow: 0 0 20px var(--blue-1);
+      transform: translateY(-2px);
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, #8B00FF, #00BFFF);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      padding: 0.5rem 1.1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: auto;
+      box-shadow: 0 0 10px rgba(139,0,255,0.5);
+      transition: box-shadow 0.2s, transform 0.2s;
+      overflow: hidden;
+      position: relative;
+    }
+    .btn-play:hover {
+      box-shadow: 0 0 20px var(--purple-1), 0 0 35px var(--blue-1);
+      transform: scale(1.03);
+    }
+
+    /* ============================================================
+       HEADER / NAV
+    ============================================================ */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(139,0,255,0.25);
+      padding: 0 2rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--purple-1), var(--blue-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: logo-pulse 3s ease-in-out infinite;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    @keyframes logo-pulse {
+      0%,100% { filter: drop-shadow(0 0 6px var(--purple-1)); }
+      50% { filter: drop-shadow(0 0 18px var(--purple-1)) drop-shadow(0 0 30px var(--blue-1)); }
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+    nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+    nav a:hover, nav a.active {
+      color: var(--blue-1);
+      text-shadow: 0 0 8px var(--blue-1);
+    }
+
+    .nav-actions { display: flex; gap: 1rem; align-items: center; }
+
+    #user-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      color: var(--blue-1);
+      text-shadow: 0 0 6px var(--blue-1);
+      display: none;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--blue-1);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+      box-shadow: 0 0 6px var(--blue-1);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav */
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      nav {
+        position: fixed;
+        top: 70px; left: 0; right: 0;
+        background: rgba(10,10,20,0.97);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(139,0,255,0.3);
+        padding: 1.5rem 2rem;
+        transform: translateY(-110%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+      }
+      nav.open { transform: translateY(0); }
+      nav ul { flex-direction: column; gap: 1.2rem; }
+      nav a { font-size: 0.85rem; }
+      .nav-actions { display: none; }
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(139,0,255,0.15);
+      border: 1px solid rgba(139,0,255,0.5);
+      color: #bf7fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      animation: badge-glow 2s ease-in-out infinite;
+    }
+    @keyframes badge-glow {
+      0%,100% { box-shadow: 0 0 6px rgba(139,0,255,0.4); }
+      50% { box-shadow: 0 0 18px rgba(139,0,255,0.8), 0 0 30px rgba(0,191,255,0.4); }
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 7vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, #ffffff 0%, var(--purple-1) 40%, var(--blue-1) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: title-shimmer 4s linear infinite;
+      background-size: 200% auto;
+    }
+    @keyframes title-shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+      letter-spacing: 1px;
+    }
+    .hero-tagline span { color: var(--blue-1); text-shadow: 0 0 8px var(--blue-1); }
+
+    /* Orbiting rings */
+    .hero-rings {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      transform: translate(-50%, -50%);
+    }
+    .ring-1 {
+      width: 300px; height: 300px;
+      border-color: rgba(139,0,255,0.2);
+      box-shadow: 0 0 10px rgba(139,0,255,0.1) inset;
+      animation: ring-spin 12s linear infinite;
+    }
+    .ring-2 {
+      width: 480px; height: 480px;
+      border-color: rgba(0,191,255,0.15);
+      animation: ring-spin 20s linear infinite reverse;
+    }
+    .ring-3 {
+      width: 650px; height: 650px;
+      border-color: rgba(139,0,255,0.08);
+      animation: ring-spin 30s linear infinite;
+    }
+    @keyframes ring-spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    /* ============================================================
+       AD BANNER
+    ============================================================ */
+    .ad-banner {
+      margin: 0 auto;
+      max-width: 900px;
+      padding: 1rem 2rem;
+      border: 1px dashed rgba(139,0,255,0.25);
+      border-radius: 8px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      background: rgba(139,0,255,0.03);
+      position: relative;
+      z-index: 2;
+    }
+    .ad-banner span { opacity: 0.5; }
+
+    /* ============================================================
+       GAMES SECTION
+    ============================================================ */
+    #games {
+      padding: 5rem 2rem;
+      position: relative;
+      z-index: 2;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .filter-tab {
+      padding: 0.45rem 1.2rem;
+      border-radius: 20px;
+      border: 1.5px solid rgba(139,0,255,0.35);
+      background: transparent;
+      color: var(--text-dim);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .filter-tab:hover {
+      border-color: var(--blue-1);
+      color: var(--blue-1);
+      box-shadow: 0 0 10px rgba(0,191,255,0.3);
+    }
+    .filter-tab.active {
+      background: linear-gradient(135deg, var(--purple-1), var(--blue-2));
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 14px var(--purple-1);
+    }
+
+    /* Games grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.4rem;
+    }
+
+    /* Game card */
+    .game-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      cursor: pointer;
+      animation: card-in 0.4s ease both;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .game-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 20px rgba(139,0,255,0.5), 0 0 40px rgba(0,191,255,0.2);
+      border-color: var(--blue-1);
+    }
+    .game-card.hidden {
+      display: none;
+    }
+
+    /* Shimmer overlay on hover */
+    .game-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.06), transparent);
+      transition: left 0.5s;
+      pointer-events: none;
+    }
+    .game-card:hover::after { left: 140%; }
+
+    .game-thumb {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-info { padding: 0.9rem 0.9rem 1rem; display: flex; flex-direction: column; flex: 1; gap: 0.5rem; }
+
+    .game-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cat-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+      width: fit-content;
+    }
+    .cat-action  { background: rgba(255,50,50,0.15);  color: #ff6b6b; border: 1px solid rgba(255,50,50,0.3); }
+    .cat-puzzle  { background: rgba(255,200,0,0.1);   color: #ffd700; border: 1px solid rgba(255,200,0,0.3); }
+    .cat-racing  { background: rgba(0,255,100,0.1);   color: #00ff88; border: 1px solid rgba(0,255,100,0.3); }
+    .cat-sports  { background: rgba(0,191,255,0.1);   color: #00bfff; border: 1px solid rgba(0,191,255,0.3); }
+    .cat-arcade  { background: rgba(139,0,255,0.15);  color: #bf7fff; border: 1px solid rgba(139,0,255,0.3); }
+    .cat-strategy{ background: rgba(255,140,0,0.1);   color: #ff8c00; border: 1px solid rgba(255,140,0,0.3); }
+
+    /* ============================================================
+       TRENDING SECTION
+    ============================================================ */
+    #trending {
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 2;
+    }
+    .trending-scroll-wrap {
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      cursor: grab;
+    }
+    .trending-scroll-wrap:active { cursor: grabbing; }
+    .trending-scroll-wrap::-webkit-scrollbar { height: 4px; }
+    .trending-scroll-wrap::-webkit-scrollbar-thumb { background: linear-gradient(90deg, var(--purple-1), var(--blue-1)); border-radius: 2px; }
+
+    .trending-row {
+      display: flex;
+      gap: 1.4rem;
+      width: max-content;
+      padding: 0.5rem 1rem;
+    }
+
+    .trending-card {
+      width: 200px;
+      background: var(--glass);
+      border: 1.5px solid rgba(0,191,255,0.35);
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .trending-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(0,191,255,0.4), 0 0 50px rgba(139,0,255,0.2);
+    }
+
+    .hot-badge {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: linear-gradient(135deg, #ff4500, #ff8c00);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      box-shadow: 0 0 10px #ff4500;
+      animation: fire-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes fire-pulse {
+      0%,100% { box-shadow: 0 0 6px #ff4500; }
+      50% { box-shadow: 0 0 18px #ff4500, 0 0 30px #ff8c00; }
+    }
+
+    .trending-thumb {
+      width: 100%;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .trending-info { padding: 0.7rem; }
+    .trending-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .trending-players { font-size: 0.65rem; color: var(--text-dim); }
+
+    /* ============================================================
+       LEADERBOARD SECTION
+    ============================================================ */
+    #leaderboard {
+      padding: 5rem 2rem;
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .leaderboard-table thead tr {
+      background: rgba(139,0,255,0.15);
+    }
+    .leaderboard-table th {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      padding: 1rem 1.2rem;
+      text-align: left;
+      color: var(--blue-1);
+      border-bottom: 1px solid rgba(0,191,255,0.2);
+    }
+    .leaderboard-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.2s;
+    }
+    .leaderboard-table tbody tr:nth-child(odd)  { background: rgba(139,0,255,0.04); }
+    .leaderboard-table tbody tr:nth-child(even) { background: rgba(0,71,171,0.06); }
+    .leaderboard-table tbody tr:hover { background: rgba(139,0,255,0.1); }
+
+    .leaderboard-table td {
+      padding: 0.85rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    /* Top 3 glow rows */
+    .rank-1 td { box-shadow: inset 3px 0 0 gold; }
+    .rank-2 td { box-shadow: inset 3px 0 0 #c0c0c0; }
+    .rank-3 td { box-shadow: inset 3px 0 0 #cd7f32; }
+    .rank-1 { background: rgba(255,215,0,0.06) !important; }
+    .rank-2 { background: rgba(192,192,192,0.05) !important; }
+    .rank-3 { background: rgba(205,127,50,0.05) !important; }
+
+    .rank-icon { font-size: 1.1rem; }
+    .score-cell { color: var(--blue-1); font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; text-shadow: 0 0 6px var(--blue-1); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: rgba(5,5,12,0.95);
+      border-top: 1px solid rgba(139,0,255,0.2);
+      padding: 3rem 2rem 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .footer-brand .logo { font-size: 1.1rem; }
+    .footer-tagline { font-size: 0.85rem; color: var(--text-dim); margin-top: 0.5rem; }
+
+    .footer-links h4, .footer-social h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--purple-1);
+      margin-bottom: 1rem;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--blue-1); }
+
+    .social-icons { display: flex; gap: 0.8rem; }
+    .social-icon {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      border: 1px solid rgba(139,0,255,0.35);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.25s;
+    }
+    .social-icon:hover {
+      border-color: var(--blue-1);
+      color: var(--blue-1);
+      box-shadow: 0 0 12px var(--blue-1);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ============================================================
+       MODALS (Login + Game)
+    ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal-box {
+      background: linear-gradient(160deg, #0e0e1f, #12122a);
+      border: 1px solid rgba(139,0,255,0.5);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: min(440px, 90vw);
+      box-shadow: 0 0 40px rgba(139,0,255,0.3), 0 0 80px rgba(0,191,255,0.1);
+      transform: scale(0.9);
+      transition: transform 0.3s;
+      position: relative;
+    }
+    .modal-overlay.open .modal-box { transform: scale(1); }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1.2rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--blue-1); }
+
+    .modal-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(90deg, var(--purple-1), var(--blue-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-subtitle { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.8rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .form-group label { font-size: 0.75rem; letter-spacing: 1px; color: var(--text-dim); font-family: 'Orbitron', sans-serif; }
+    .form-group input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(139,0,255,0.3);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 0.7rem 1rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus {
+      border-color: var(--blue-1);
+      box-shadow: 0 0 10px rgba(0,191,255,0.25);
+    }
+    .form-note { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+    .form-error { color: #ff6b6b; font-size: 0.78rem; min-height: 1rem; margin-bottom: 0.5rem; }
+
+    /* Game modal */
+    .game-modal-box {
+      width: min(700px, 95vw);
+      padding: 1.5rem;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    .game-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    #game-canvas-wrap {
+      position: relative;
+      width: 100%;
+      background: #050510;
+      border-radius: 10px;
+      border: 1px solid rgba(139,0,255,0.3);
+      overflow: hidden;
+    }
+    #game-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .game-hud {
+      display: flex;
+      gap: 2rem;
+      margin-top: 0.8rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+    }
+    .hud-item span { color: var(--blue-1); text-shadow: 0 0 6px var(--blue-1); }
+    .game-instructions { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.6rem; }
+
+    /* ============================================================
+       SECTION PADDING / WRAPPER
+    ============================================================ */
+    section { position: relative; z-index: 2; }
+    .ad-wrap { padding: 1.5rem 2rem; }
+
+    /* ============================================================
+       ANIMATIONS — misc
+    ============================================================ */
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fade-in-up 0.7s ease both; }
+
+    /* Loading animation in game modal */
+    .loading-anim {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+    }
+    .loading-spinner {
+      width: 50px; height: 50px;
+      border: 3px solid rgba(139,0,255,0.2);
+      border-top-color: var(--purple-1);
+      border-right-color: var(--blue-1);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+
+<body>
+
+<!-- Synthwave background canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Particle background canvas -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header>
+  <a href="#home" class="logo">⚡ Nikunj Pro Games</a>
+
+  <nav id="main-nav">
+    <ul>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#leaderboard">Leaderboard</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="nav-actions">
+    <span id="user-display"></span>
+    <button class="btn btn-outline" onclick="openLoginModal()">
+      <i class="fas fa-user"></i> Login
+    </button>
+  </div>
+
+  <div class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section id="home">
+  <div class="hero-rings">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+  </div>
+  <div class="hero-content fade-in">
+    <div class="hero-badge">🎮 &nbsp; ONLINE GAMING PLATFORM &nbsp; 🎮</div>
+    <h1 class="hero-title">Nikunj Pro<br>Games</h1>
+    <p class="hero-tagline">
+      <span>Play Free.</span> Play Epic.
+      <span>Play Nikunj Pro Games.</span>
+    </p>
+    <a href="#games" class="btn btn-primary" style="font-size:0.85rem; padding: 0.8rem 2.2rem;">
+      <i class="fas fa-gamepad"></i> Explore Games
+    </a>
+  </div>
+</section>
+
+<!-- Ad Banner 1 -->
+<div class="ad-wrap">
+  <div class="ad-banner">
+    <span>[ Advertisement ]</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     GAMES SECTION
+============================================================ -->
+<section id="games">
+  <div class="section-title">🎮 All Games</div>
+  <div class="section-underline"></div>
+
+  <div class="filter-tabs" id="filter-tabs">
+    <button class="filter-tab active" data-cat="all">All</button>
+    <button class="filter-tab" data-cat="action">Action</button>
+    <button class="filter-tab" data-cat="puzzle">Puzzle</button>
+    <button class="filter-tab" data-cat="racing">Racing</button>
+    <button class="filter-tab" data-cat="sports">Sports</button>
+    <button class="filter-tab" data-cat="arcade">Arcade</button>
+    <button class="filter-tab" data-cat="strategy">Strategy</button>
+  </div>
+
+  <div class="games-grid" id="games-grid">
+    <!-- Cards injected by JS -->
+  </div>
+</section>
+
+<!-- ============================================================
+     TRENDING SECTION
+============================================================ -->
+<section id="trending" style="padding:4rem 2rem;">
+  <div class="section-title">Trending Now 🔥</div>
+  <div class="section-underline"></div>
+
+  <div class="trending-scroll-wrap" id="trending-scroll">
+    <div class="trending-row" id="trending-row">
+      <!-- Trending cards injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- Ad Banner 2 -->
+<div class="ad-wrap">
+  <div class="ad-banner">
+    <span>[ Advertisement ]</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     LEADERBOARD SECTION
+============================================================ -->
+<section id="leaderboard">
+  <div class="section-title">🏆 Leaderboard</div>
+  <div class="section-underline"></div>
+
+  <table class="leaderboard-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Score</th>
+        <th>Games Played</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboard-body">
+      <!-- Injected by JS -->
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     ABOUT SECTION (brief)
+============================================================ -->
+<section id="about" style="padding:4rem 2rem; max-width:700px; margin:0 auto; text-align:center;">
+  <div class="section-title">About Us</div>
+  <div class="section-underline"></div>
+  <p style="color:var(--text-dim); font-size:1rem; line-height:1.8; margin-bottom:1.2rem;">
+    Nikunj Pro Games is a free-to-play online gaming platform built for gamers who crave epic action, mind-bending puzzles, and blazing racing challenges — all in one place. No downloads. No paywalls. Just pure gaming.
+  </p>
+  <p style="color:var(--text-dim); font-size:1rem; line-height:1.8;">
+    Our mission is to bring top-quality browser games to everyone, everywhere — powered by the latest web technologies and designed for all devices.
+  </p>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-top" style="max-width:1200px; margin:0 auto;">
+    <div class="footer-brand">
+      <div class="logo" style="display:inline-block; font-size:1.1rem;">⚡ Nikunj Pro Games</div>
+      <p class="footer-tagline">Play Free. Play Epic.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#leaderboard">Leaderboard</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-social">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon" aria-label="Discord"><i class="fab fa-discord"></i></a>
+        <a href="#" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2024 Nikunj Pro Games. All Rights Reserved.
+  </div>
+</footer>
+
+<!-- ============================================================
+     LOGIN MODAL
+============================================================ -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+    <div class="modal-title">Welcome Back</div>
+    <div class="modal-subtitle">Sign in to save your progress and climb the leaderboard.</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-username" placeholder="Enter your username" autocomplete="username" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" />
+    </div>
+    <p class="form-note"><i class="fas fa-save" style="color:var(--blue-1);"></i> &nbsp; Save Progress — your scores sync across all devices.</p>
+    <div class="form-error" id="login-error"></div>
+    <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="handleLogin()">
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     GAME MODAL
+============================================================ -->
+<div class="modal-overlay" id="game-modal">
+  <div class="modal-box game-modal-box">
+    <div class="game-modal-header">
+      <div class="modal-title" id="game-modal-title">Game Title</div>
+      <button class="modal-close" style="position:relative;top:auto;right:auto;" onclick="closeGameModal()">&times;</button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="game-loading" class="loading-anim">
+      <div class="loading-spinner"></div>
+      <div style="font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--blue-1);">Loading Game...</div>
+    </div>
+
+    <!-- Canvas game -->
+    <div id="game-canvas-wrap" style="display:none;">
+      <canvas id="game-canvas" width="640" height="380"></canvas>
+    </div>
+    <div class="game-hud" id="game-hud" style="display:none;">
+      <div class="hud-item">Score: <span id="hud-score">0</span></div>
+      <div class="hud-item">Lives: <span id="hud-lives">3</span></div>
+      <div class="hud-item">Level: <span id="hud-level">1</span></div>
+    </div>
+    <div class="game-instructions" id="game-instructions"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ============================================================
+   SYNTHWAVE BACKGROUND
+============================================================ */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let offset = 0;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function drawFrame() {
+    const W = canvas.width;
+    const H = canvas.height;
+    const horizonY = H * 0.52;
+    const vX = W / 2;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Sky gradient
+    const sky = ctx.createLinearGradient(0, 0, 0, horizonY);
+    sky.addColorStop(0,   '#050008');
+    sky.addColorStop(0.6, '#0a001e');
+    sky.addColorStop(1,   '#160035');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, horizonY);
+
+    // Nebula blobs in sky
+    [
+      [0.25, 0.35, 0.32, 'rgba(100,0,200,0.09)'],
+      [0.72, 0.28, 0.28, 'rgba(0,150,220,0.08)'],
+      [0.50, 0.15, 0.45, 'rgba(139,0,255,0.05)'],
+    ].forEach(([rx, ry, r, col]) => {
+      const g = ctx.createRadialGradient(W*rx, horizonY*ry, 0, W*rx, horizonY*ry, W*r);
+      g.addColorStop(0, col);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, horizonY);
+    });
+
+    // Retro sun — outer glow
+    const sunX = vX, sunY = horizonY - H * 0.13, sunR = H * 0.1;
+    const sunGlow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, sunR * 2.2);
+    sunGlow.addColorStop(0,   'rgba(200,0,255,0.28)');
+    sunGlow.addColorStop(0.5, 'rgba(100,0,200,0.10)');
+    sunGlow.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = sunGlow;
+    ctx.fillRect(sunX - sunR*2.5, sunY - sunR*2.5, sunR*5, sunR*5);
+
+    // Sun disk
+    const sunGrad = ctx.createLinearGradient(0, sunY - sunR, 0, sunY + sunR);
+    sunGrad.addColorStop(0,    '#ff88ff');
+    sunGrad.addColorStop(0.35, '#cc00ff');
+    sunGrad.addColorStop(0.65, '#6600cc');
+    sunGrad.addColorStop(1,    '#30007a');
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2);
+    ctx.fillStyle = sunGrad;
+    ctx.fill();
+    // Horizontal scan-lines clipped to sun disk
+    ctx.clip();
+    for (let sy = sunY - sunR; sy < sunY + sunR; sy += 6) {
+      ctx.fillStyle = 'rgba(0,0,20,0.42)';
+      ctx.fillRect(sunX - sunR, sy + 3.5, sunR * 2, 2.5);
+    }
+    ctx.restore();
+
+    // Grid floor
+    const floor = ctx.createLinearGradient(0, horizonY, 0, H);
+    floor.addColorStop(0,   '#0d0020');
+    floor.addColorStop(0.4, '#080015');
+    floor.addColorStop(1,   '#0a0a0f');
+    ctx.fillStyle = floor;
+    ctx.fillRect(0, horizonY, W, H - horizonY);
+
+    // Perspective grid
+    const COLS = 16;
+    const ROWS = 24;
+    offset = (offset + 0.006) % 1;
+
+    ctx.save();
+
+    // Vertical lines — fan from vanish point
+    for (let i = 0; i <= COLS; i++) {
+      const t  = i / COLS;
+      const bx = t * W;
+      const a  = 0.10 + 0.20 * Math.sin(t * Math.PI);
+      const g  = ctx.createLinearGradient(vX, horizonY, bx, H);
+      g.addColorStop(0,   'rgba(139,0,255,0)');
+      g.addColorStop(0.3, `rgba(139,0,255,${(a * 0.4).toFixed(3)})`);
+      g.addColorStop(1,   `rgba(139,0,255,${a.toFixed(3)})`);
+      ctx.strokeStyle = g;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(vX, horizonY);
+      ctx.lineTo(bx, H);
+      ctx.stroke();
+    }
+
+    // Horizontal lines — scrolling perspective
+    for (let row = 1; row <= ROWS; row++) {
+      const z = row - offset;
+      if (z <= 0.01) continue;
+      const t = 1 / z;
+      if (t > 1) continue;
+      const y     = horizonY + t * (H - horizonY);
+      const halfW = t * (W / 2);
+      const alpha = Math.min(t * 0.65, 0.52);
+      const lineW = Math.max(t * 1.3, 0.35);
+      const useBlue = row % 4 === 0;
+      ctx.strokeStyle = useBlue
+        ? `rgba(0,191,255,${alpha.toFixed(3)})`
+        : `rgba(139,0,255,${(alpha * 0.85).toFixed(3)})`;
+      ctx.lineWidth = lineW;
+      ctx.beginPath();
+      ctx.moveTo(vX - halfW, y);
+      ctx.lineTo(vX + halfW, y);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Glowing horizon line
+    const hg = ctx.createLinearGradient(0, 0, W, 0);
+    hg.addColorStop(0,    'rgba(139,0,255,0)');
+    hg.addColorStop(0.15, 'rgba(139,0,255,0.55)');
+    hg.addColorStop(0.5,  'rgba(0,220,255,1)');
+    hg.addColorStop(0.85, 'rgba(139,0,255,0.55)');
+    hg.addColorStop(1,    'rgba(139,0,255,0)');
+    ctx.save();
+    ctx.shadowColor = '#00cfff';
+    ctx.shadowBlur  = 20;
+    ctx.beginPath();
+    ctx.moveTo(0, horizonY);
+    ctx.lineTo(W, horizonY);
+    ctx.strokeStyle = hg;
+    ctx.lineWidth   = 2.5;
+    ctx.stroke();
+    ctx.restore();
+
+    // Horizon atmospheric bloom
+    const bloom = ctx.createRadialGradient(vX, horizonY, 0, vX, horizonY, W * 0.55);
+    bloom.addColorStop(0,   'rgba(80,0,255,0.13)');
+    bloom.addColorStop(0.4, 'rgba(0,191,255,0.05)');
+    bloom.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = bloom;
+    ctx.fillRect(0, horizonY - H * 0.25, W, H * 0.5);
+
+    requestAnimationFrame(drawFrame);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  drawFrame();
+})();
+
+/* ============================================================
+   PARTICLE SYSTEM
+============================================================ */
+(function() {
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const COUNT = 90;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = document.body.scrollHeight || window.innerHeight;
+  }
+
+  function mkParticle() {
+    const colors = ['#8B00FF','#6A0DAD','#00BFFF','#0047AB','#bf7fff','#7fe8ff'];
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.5 + 0.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      alpha: Math.random() * 0.7 + 0.1,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.015 + Math.random() * 0.025,
+    };
+  }
+
+  for (let i = 0; i < COUNT; i++) particles.push(mkParticle());
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.pulse += p.pulseSpeed;
+      const alpha = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  // Resize after layout settles for scroll-height accuracy
+  setTimeout(resize, 200);
+  resize();
+  draw();
+})();
+
+/* ============================================================
+   GAME DATA
+============================================================ */
+const GAMES = [
+  { id:1,  name:'Shadow Striker',    cat:'action',   emoji:'🗡️',  gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K' },
+  { id:2,  name:'Neon Cube',         cat:'puzzle',   emoji:'🧩',  gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K'  },
+  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   emoji:'🏎️',  gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
+  { id:4,  name:'Pixel Basket',      cat:'sports',   emoji:'🏀',  gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K'  },
+  { id:5,  name:'Galactic Blaster',  cat:'arcade',   emoji:'🚀',  gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
+  { id:6,  name:'Empire Builder',    cat:'strategy', emoji:'🏰',  gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K'  },
+  { id:7,  name:'Cyber Brawl',       cat:'action',   emoji:'🥊',  gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
+  { id:8,  name:'Mind Maze',         cat:'puzzle',   emoji:'🌀',  gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K'  },
+  { id:9,  name:'Drift King',        cat:'racing',   emoji:'🏁',  gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K' },
+  { id:10, name:'Soccer Stars',      cat:'sports',   emoji:'⚽',  gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K' },
+  { id:11, name:'Retro Invaders',    cat:'arcade',   emoji:'👾',  gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
+  { id:12, name:'War Tactics',       cat:'strategy', emoji:'⚔️',  gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K'  },
+  { id:13, name:'Fire Warrior',      cat:'action',   emoji:'🔥',  gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
+  { id:14, name:'Color Switch',      cat:'puzzle',   emoji:'🎨',  gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K' },
+];
+
+const TRENDING = [
+  { id:3,  name:'Turbo Rush 3D',    emoji:'🏎️', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
+  { id:13, name:'Fire Warrior',     emoji:'🔥', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
+  { id:11, name:'Retro Invaders',   emoji:'👾', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
+  { id:5,  name:'Galactic Blaster', emoji:'🚀', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
+  { id:7,  name:'Cyber Brawl',      emoji:'🥊', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
+];
+
+const LEADERBOARD = [
+  { rank:1,  name:'ProGamer_X',    score:98450, games:342 },
+  { rank:2,  name:'NeonBlaster99', score:87230, games:289 },
+  { rank:3,  name:'CyberNinja',    score:79100, games:301 },
+  { rank:4,  name:'StarHunter',    score:65540, games:198 },
+  { rank:5,  name:'VoltStrike',    score:58320, games:241 },
+  { rank:6,  name:'PixelKnight',   score:49870, games:176 },
+  { rank:7,  name:'DarkPulse',     score:43210, games:155 },
+  { rank:8,  name:'NebulaDrift',   score:37650, games:130 },
+  { rank:9,  name:'GridRunner',    score:29980, games:104 },
+  { rank:10, name:'LightSpeed_Z',  score:21450, games:87  },
+];
+
+/* ============================================================
+   RENDER FUNCTIONS
+============================================================ */
+function renderGames(filter = 'all') {
+  const grid = document.getElementById('games-grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? GAMES : GAMES.filter(g => g.cat === filter);
+  filtered.forEach((g, i) => {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.style.animationDelay = `${i * 0.05}s`;
+    card.dataset.cat = g.cat;
+    card.innerHTML = `
+      <div class="game-thumb" style="background:${g.gradient};">
+        <span style="filter:drop-shadow(0 0 12px rgba(255,255,255,0.4))">${g.emoji}</span>
+      </div>
+      <div class="game-info">
+        <div class="game-name">${g.name}</div>
+        <span class="cat-badge cat-${g.cat}">${g.cat.toUpperCase()}</span>
+        <button class="btn-play" onclick="openGame(${g.id})"><i class="fas fa-play"></i> Play Now</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderTrending() {
+  const row = document.getElementById('trending-row');
+  row.innerHTML = '';
+  TRENDING.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'trending-card';
+    card.onclick = () => openGame(g.id);
+    card.innerHTML = `
+      <div class="hot-badge">🔥 HOT</div>
+      <div class="trending-thumb" style="background:${g.gradient};">
+        <span style="filter:drop-shadow(0 0 10px rgba(255,255,255,0.4))">${g.emoji}</span>
+      </div>
+      <div class="trending-info">
+        <div class="trending-name">${g.name}</div>
+        <div class="trending-players"><i class="fas fa-users" style="color:var(--blue-1)"></i> ${g.players} playing</div>
+      </div>`;
+    row.appendChild(card);
+  });
+
+  // Drag-scroll
+  const wrap = document.getElementById('trending-scroll');
+  let isDragging = false, startX, scrollLeft;
+  wrap.addEventListener('mousedown', e => { isDragging = true; startX = e.pageX - wrap.offsetLeft; scrollLeft = wrap.scrollLeft; });
+  wrap.addEventListener('mouseleave', () => isDragging = false);
+  wrap.addEventListener('mouseup', () => isDragging = false);
+  wrap.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    wrap.scrollLeft = scrollLeft - (e.pageX - wrap.offsetLeft - startX);
+  });
+}
+
+function renderLeaderboard() {
+  const tbody = document.getElementById('leaderboard-body');
+  tbody.innerHTML = '';
+  LEADERBOARD.forEach(p => {
+    const tr = document.createElement('tr');
+    if (p.rank <= 3) tr.className = `rank-${p.rank}`;
+    const icon = p.rank === 1 ? '👑' : p.rank === 2 ? '🥈' : p.rank === 3 ? '🥉' : `#${p.rank}`;
+    tr.innerHTML = `
+      <td><span class="rank-icon">${icon}</span></td>
+      <td>${p.name}</td>
+      <td class="score-cell">${p.score.toLocaleString()}</td>
+      <td>${p.games}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ============================================================
+   FILTER TABS
+============================================================ */
+document.getElementById('filter-tabs').addEventListener('click', e => {
+  const tab = e.target.closest('.filter-tab');
+  if (!tab) return;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  renderGames(tab.dataset.cat);
+});
+
+/* ============================================================
+   MOBILE NAV
+============================================================ */
+function toggleMobileNav() {
+  document.getElementById('main-nav').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+// Close on link click
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('main-nav').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  });
+});
+
+/* ============================================================
+   ACTIVE NAV LINK
+============================================================ */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -40% 0px' });
+sections.forEach(s => observer.observe(s));
+
+/* ============================================================
+   LOGIN MODAL
+============================================================ */
+function openLoginModal() {
+  document.getElementById('login-modal').classList.add('open');
+}
+function closeLoginModal() {
+  document.getElementById('login-modal').classList.remove('open');
+  document.getElementById('login-error').textContent = '';
+}
+document.getElementById('login-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('login-modal')) closeLoginModal();
+});
+
+function handleLogin() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const err = document.getElementById('login-error');
+
+  if (!username) { err.textContent = 'Username is required.'; return; }
+  if (password.length < 4) { err.textContent = 'Password must be at least 4 characters.'; return; }
+
+  // Simulate login success
+  const ud = document.getElementById('user-display');
+  ud.textContent = `👤 ${username}`;
+  ud.style.display = 'inline';
+  closeLoginModal();
+}
+
+/* ============================================================
+   GAME MODAL + MINI-GAME (Click-the-target)
+============================================================ */
+let gameLoop = null;
+let gameState = {};
+
+function openGame(id) {
+  const game = GAMES.find(g => g.id === id);
+  if (!game) return;
+
+  document.getElementById('game-modal-title').textContent = game.emoji + ' ' + game.name;
+  document.getElementById('game-modal').classList.add('open');
+  document.getElementById('game-loading').style.display = 'flex';
+  document.getElementById('game-canvas-wrap').style.display = 'none';
+  document.getElementById('game-hud').style.display = 'none';
+  document.getElementById('game-instructions').textContent = '';
+
+  // Show loading then start game
+  setTimeout(() => {
+    document.getElementById('game-loading').style.display = 'none';
+    document.getElementById('game-canvas-wrap').style.display = 'block';
+    document.getElementById('game-hud').style.display = 'flex';
+    document.getElementById('game-instructions').textContent = '🖱️  Click the glowing targets before they disappear! Each hit = +10 points.';
+    startMiniGame();
+  }, 1500);
+}
+
+function closeGameModal() {
+  document.getElementById('game-modal').classList.remove('open');
+  stopMiniGame();
+}
+document.getElementById('game-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('game-modal')) closeGameModal();
+});
+
+function startMiniGame() {
+  stopMiniGame();
+
+  const canvas = document.getElementById('game-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+
+  gameState = {
+    score: 0,
+    lives: 3,
+    level: 1,
+    targets: [],
+    particles: [],
+    elapsed: 0,
+    nextSpawn: 60,
+    spawnInterval: 90,
+    running: true,
+  };
+
+  updateHUD();
+
+  function spawnTarget() {
+    const margin = 40;
+    const r = 22 + Math.random() * 14;
+    const colors = ['#8B00FF','#00BFFF','#ff00aa','#ffcc00','#00ff88'];
+    gameState.targets.push({
+      x: margin + Math.random() * (W - 2*margin),
+      y: margin + Math.random() * (H - 2*margin),
+      r,
+      maxLife: 120 - gameState.level * 5,
+      life: 120 - gameState.level * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      pulse: 0,
+    });
+  }
+
+  function spawnParticles(x, y, color) {
+    for (let i = 0; i < 10; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 4;
+      gameState.particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: 3 + Math.random() * 3,
+        alpha: 1,
+        color,
+      });
+    }
+  }
+
+  canvas.onclick = function(e) {
+    if (!gameState.running) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = W / rect.width;
+    const scaleY = H / rect.height;
+    const mx = (e.clientX - rect.left) * scaleX;
+    const my = (e.clientY - rect.top) * scaleY;
+
+    for (let i = gameState.targets.length - 1; i >= 0; i--) {
+      const t = gameState.targets[i];
+      const dist = Math.hypot(mx - t.x, my - t.y);
+      if (dist <= t.r + 6) {
+        spawnParticles(t.x, t.y, t.color);
+        gameState.targets.splice(i, 1);
+        gameState.score += 10;
+        if (gameState.score % 100 === 0) gameState.level++;
+        updateHUD();
+        break;
+      }
+    }
+  };
+
+  function updateHUD() {
+    document.getElementById('hud-score').textContent = gameState.score;
+    document.getElementById('hud-lives').textContent = gameState.lives;
+    document.getElementById('hud-level').textContent = gameState.level;
+  }
+
+  function tick() {
+    if (!gameState.running) return;
+
+    // Background
+    ctx.fillStyle = '#050510';
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(139,0,255,0.07)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    gameState.elapsed++;
+
+    // Spawn
+    if (gameState.elapsed >= gameState.nextSpawn) {
+      spawnTarget();
+      gameState.nextSpawn = gameState.elapsed + Math.max(30, gameState.spawnInterval - gameState.level * 4);
+    }
+
+    // Update & draw targets
+    for (let i = gameState.targets.length - 1; i >= 0; i--) {
+      const t = gameState.targets[i];
+      t.life--;
+      t.pulse += 0.12;
+
+      if (t.life <= 0) {
+        gameState.targets.splice(i, 1);
+        gameState.lives--;
+        updateHUD();
+        if (gameState.lives <= 0) {
+          gameState.running = false;
+          drawGameOver(ctx, W, H);
+          return;
+        }
+        continue;
+      }
+
+      const lifeRatio = t.life / t.maxLife;
+      const glow = 8 + 10 * Math.sin(t.pulse);
+      const alpha = Math.min(1, lifeRatio * 3);
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = t.color;
+      ctx.shadowBlur = glow;
+
+      // Outer ring
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, t.r + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = t.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Core
+      const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.r);
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.4, t.color);
+      grad.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Life bar
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = 'rgba(255,255,255,0.15)';
+      ctx.fillRect(t.x - t.r, t.y + t.r + 6, t.r*2, 4);
+      ctx.fillStyle = lifeRatio > 0.5 ? '#00ff88' : lifeRatio > 0.25 ? '#ffcc00' : '#ff4444';
+      ctx.fillRect(t.x - t.r, t.y + t.r + 6, t.r*2 * lifeRatio, 4);
+
+      ctx.restore();
+    }
+
+    // Particles
+    for (let i = gameState.particles.length - 1; i >= 0; i--) {
+      const p = gameState.particles[i];
+      p.x += p.vx; p.y += p.vy; p.vy += 0.1; p.alpha -= 0.05;
+      if (p.alpha <= 0) { gameState.particles.splice(i, 1); continue; }
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // HUD overlay
+    ctx.fillStyle = 'rgba(0,191,255,0.7)';
+    ctx.font = '600 13px Orbitron, monospace';
+    ctx.fillText(`SCORE: ${gameState.score}`, 12, 22);
+
+    gameLoop = requestAnimationFrame(tick);
+  }
+
+  gameLoop = requestAnimationFrame(tick);
+}
+
+function drawGameOver(ctx, W, H) {
+  ctx.fillStyle = 'rgba(0,0,0,0.65)';
+  ctx.fillRect(0, 0, W, H);
+  ctx.font = 'bold 36px Orbitron, monospace';
+  ctx.fillStyle = '#ff4444';
+  ctx.shadowColor = '#ff4444';
+  ctx.shadowBlur = 20;
+  ctx.textAlign = 'center';
+  ctx.fillText('GAME OVER', W/2, H/2 - 20);
+  ctx.font = '20px Orbitron, monospace';
+  ctx.fillStyle = '#00BFFF';
+  ctx.shadowColor = '#00BFFF';
+  ctx.fillText(`Final Score: ${gameState.score}`, W/2, H/2 + 24);
+  ctx.font = '14px Orbitron, monospace';
+  ctx.fillStyle = '#9999bb';
+  ctx.shadowBlur = 0;
+  ctx.fillText('Close and reopen to play again', W/2, H/2 + 60);
+  ctx.textAlign = 'left';
+}
+
+function stopMiniGame() {
+  if (gameLoop) { cancelAnimationFrame(gameLoop); gameLoop = null; }
+  if (gameState) { gameState.running = false; }
+  const canvas = document.getElementById('game-canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (canvas.onclick) canvas.onclick = null;
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+renderGames();
+renderTrending();
+renderLeaderboard();
+</script>
+</body>
+</html>
