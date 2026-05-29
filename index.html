@@ -448,24 +448,59 @@
     }
 
     /* Games grid */
+    .game-search-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.4rem;
+    }
+    .search-input {
+      position: relative;
+      width: min(640px, 100%);
+    }
+    .search-input i {
+      position: absolute;
+      top: 50%; left: 1rem;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+    .search-input input {
+      width: 100%;
+      padding: 0.95rem 1rem 0.95rem 2.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(139,0,255,0.35);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      outline: none;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input input:focus {
+      border-color: var(--blue-1);
+      box-shadow: 0 0 18px rgba(0,191,255,0.18);
+    }
+
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.4rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.6rem;
     }
 
     /* Game card */
     .game-card {
       background: var(--glass);
       border: 1px solid var(--glass-border);
-      border-radius: 12px;
+      border-radius: 18px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
       transition: transform 0.3s, box-shadow 0.3s;
       position: relative;
       cursor: pointer;
+      min-height: 420px;
       animation: card-in 0.4s ease both;
     }
     @keyframes card-in {
@@ -474,12 +509,10 @@
     }
     .game-card:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 0 20px rgba(139,0,255,0.5), 0 0 40px rgba(0,191,255,0.2);
+      box-shadow: 0 0 22px rgba(139,0,255,0.55), 0 0 46px rgba(0,191,255,0.25);
       border-color: var(--blue-1);
     }
-    .game-card.hidden {
-      display: none;
-    }
+    .game-card.hidden { display: none; }
 
     /* Shimmer overlay on hover */
     .game-card::after {
@@ -495,27 +528,67 @@
 
     .game-thumb {
       width: 100%;
-      height: 140px;
+      height: 260px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
       position: relative;
       overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .game-thumb img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 0 24px rgba(0,0,0,0.15);
+      border: 2px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
     }
 
-    .game-info { padding: 0.9rem 0.9rem 1rem; display: flex; flex-direction: column; flex: 1; gap: 0.5rem; }
+    .game-info { padding: 1rem; display: flex; flex-direction: column; flex: 1; gap: 0.75rem; }
 
     .game-name {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.2;
     }
 
+    .fullscreen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0.65rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .fullscreen-btn:hover {
+      background: rgba(0,191,255,0.12);
+      transform: translateY(-1px);
+      box-shadow: 0 0 16px rgba(0,191,255,0.2);
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--text-dim);
+      padding: 2rem 1rem;
+      font-size: 0.95rem;
+      border: 1px dashed rgba(139,0,255,0.35);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    /* ============================================================
+       TRENDING SECTION
+    ============================================================ */
     .cat-badge {
       display: inline-block;
       font-size: 0.6rem;
@@ -811,34 +884,54 @@
       justify-content: space-between;
       margin-bottom: 1rem;
     }
-    #game-canvas-wrap {
+    #game-frame-wrap {
       position: relative;
       width: 100%;
       background: #050510;
-      border-radius: 10px;
+      border-radius: 16px;
       border: 1px solid rgba(139,0,255,0.3);
       overflow: hidden;
+      min-height: 420px;
     }
-    #game-canvas {
-      display: block;
+    #game-frame {
       width: 100%;
-      height: auto;
+      min-height: 420px;
+      border: none;
+      display: block;
+      background: #050510;
     }
     .game-hud {
-      display: flex;
+      display: none;
       gap: 2rem;
       margin-top: 0.8rem;
       font-family: 'Orbitron', sans-serif;
       font-size: 0.75rem;
     }
     .hud-item span { color: var(--blue-1); text-shadow: 0 0 6px var(--blue-1); }
-    .game-instructions { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.6rem; }
+    .game-instructions { font-size: 0.9rem; color: var(--text-dim); margin-top: 0.8rem; }
 
     /* ============================================================
        SECTION PADDING / WRAPPER
     ============================================================ */
     section { position: relative; z-index: 2; }
     .ad-wrap { padding: 1.5rem 2rem; }
+
+    @media (max-width: 768px) {
+      header { padding: 0 1rem; height: 64px; }
+      #home { padding: 6.5rem 1.2rem 3rem; }
+      #games, #trending, #leaderboard, #about, footer { padding: 3rem 1.2rem; }
+      .ad-wrap { padding: 1rem 1.2rem; }
+      .games-grid { grid-template-columns: 1fr; }
+      .game-thumb { height: 220px; }
+      .game-thumb img { width: 100px; height: 100px; }
+      .game-info { padding: 0.9rem; }
+      .game-modal-box { width: min(92vw, 95vw); padding: 1.2rem; }
+      #game-frame-wrap { min-height: 320px; }
+      #game-frame { min-height: 320px; }
+      .game-search-wrap { margin-bottom: 1rem; }
+      .filter-tabs { gap: 0.5rem; }
+      .filter-tab { font-size: 0.75rem; padding: 0.4rem 1rem; }
+    }
 
     /* ============================================================
        ANIMATIONS — misc
@@ -882,7 +975,7 @@
      HEADER
 ============================================================ -->
 <header>
-  <a href="#home" class="logo">⚡ Nikunj Pro Games</a>
+  <a href="#home" class="logo">Nikunj Pro Games</a>
 
   <nav id="main-nav">
     <ul>
@@ -915,7 +1008,7 @@
     <div class="ring ring-3"></div>
   </div>
   <div class="hero-content fade-in">
-    <div class="hero-badge">🎮 &nbsp; ONLINE GAMING PLATFORM &nbsp; 🎮</div>
+    <div class="hero-badge">ONLINE GAMING PLATFORM</div>
     <h1 class="hero-title">Nikunj Pro<br>Games</h1>
     <p class="hero-tagline">
       <span>Play Free.</span> Play Epic.
@@ -938,8 +1031,15 @@
      GAMES SECTION
 ============================================================ -->
 <section id="games">
-  <div class="section-title">🎮 All Games</div>
+  <div class="section-title">All Games</div>
   <div class="section-underline"></div>
+
+  <div class="game-search-wrap">
+    <div class="search-input">
+      <i class="fas fa-search"></i>
+      <input id="game-search" type="search" placeholder="Search games by name..." aria-label="Search games" />
+    </div>
+  </div>
 
   <div class="filter-tabs" id="filter-tabs">
     <button class="filter-tab active" data-cat="all">All</button>
@@ -960,7 +1060,7 @@
      TRENDING SECTION
 ============================================================ -->
 <section id="trending" style="padding:4rem 2rem;">
-  <div class="section-title">Trending Now 🔥</div>
+  <div class="section-title">Trending Now</div>
   <div class="section-underline"></div>
 
   <div class="trending-scroll-wrap" id="trending-scroll">
@@ -981,7 +1081,7 @@
      LEADERBOARD SECTION
 ============================================================ -->
 <section id="leaderboard">
-  <div class="section-title">🏆 Leaderboard</div>
+  <div class="section-title">Leaderboard</div>
   <div class="section-underline"></div>
 
   <table class="leaderboard-table">
@@ -1009,7 +1109,7 @@
     Nikunj Pro Games is a free-to-play online gaming platform built for gamers who crave epic action, mind-bending puzzles, and blazing racing challenges — all in one place. No downloads. No paywalls. Just pure gaming.
   </p>
   <p style="color:var(--text-dim); font-size:1rem; line-height:1.8;">
-    Our mission is to bring top-quality browser games to everyone, everywhere — powered by the latest web technologies and designed for all devices.
+    Our mission is to bring top-quality browser games to everyone, everywhere - I'm Nikunj A 15 Year Olf Web Developr And I Welcome You To The Premium Webpage For Gaming
   </p>
 </section>
 
@@ -1019,7 +1119,7 @@
 <footer>
   <div class="footer-top" style="max-width:1200px; margin:0 auto;">
     <div class="footer-brand">
-      <div class="logo" style="display:inline-block; font-size:1.1rem;">⚡ Nikunj Pro Games</div>
+      <div class="logo" style="display:inline-block; font-size:1.1rem;">Nikunj Pro Games</div>
       <p class="footer-tagline">Play Free. Play Epic.</p>
     </div>
     <div class="footer-links">
@@ -1094,16 +1194,18 @@
       <div style="font-family:'Orbitron',sans-serif; font-size:0.8rem; color:var(--blue-1);">Loading Game...</div>
     </div>
 
-    <!-- Canvas game -->
-    <div id="game-canvas-wrap" style="display:none;">
-      <canvas id="game-canvas" width="640" height="380"></canvas>
+    <!-- Iframe game -->
+    <div id="game-frame-wrap" style="display:none; position:relative;">
+      <iframe id="game-frame"
+        src=""
+        allow="fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+        frameborder="0"
+        title="Game Preview"></iframe>
+      <button class="fullscreen-btn" onclick="requestGameFullscreen()"><i class="fas fa-expand"></i> Fullscreen</button>
     </div>
-    <div class="game-hud" id="game-hud" style="display:none;">
-      <div class="hud-item">Score: <span id="hud-score">0</span></div>
-      <div class="hud-item">Lives: <span id="hud-lives">3</span></div>
-      <div class="hud-item">Level: <span id="hud-level">1</span></div>
-    </div>
-    <div class="game-instructions" id="game-instructions"></div>
+    <div class="game-instructions" id="game-instructions" style="margin-top:1rem; color:var(--text-dim);"></div>
   </div>
 </div>
 
@@ -1340,28 +1442,28 @@
    GAME DATA
 ============================================================ */
 const GAMES = [
-  { id:1,  name:'Shadow Striker',    cat:'action',   emoji:'🗡️',  gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K' },
-  { id:2,  name:'Neon Cube',         cat:'puzzle',   emoji:'🧩',  gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K'  },
-  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   emoji:'🏎️',  gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
-  { id:4,  name:'Pixel Basket',      cat:'sports',   emoji:'🏀',  gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K'  },
-  { id:5,  name:'Galactic Blaster',  cat:'arcade',   emoji:'🚀',  gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
-  { id:6,  name:'Empire Builder',    cat:'strategy', emoji:'🏰',  gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K'  },
-  { id:7,  name:'Cyber Brawl',       cat:'action',   emoji:'🥊',  gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
-  { id:8,  name:'Mind Maze',         cat:'puzzle',   emoji:'🌀',  gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K'  },
-  { id:9,  name:'Drift King',        cat:'racing',   emoji:'🏁',  gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K' },
-  { id:10, name:'Soccer Stars',      cat:'sports',   emoji:'⚽',  gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K' },
-  { id:11, name:'Retro Invaders',    cat:'arcade',   emoji:'👾',  gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
-  { id:12, name:'War Tactics',       cat:'strategy', emoji:'⚔️',  gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K'  },
-  { id:13, name:'Fire Warrior',      cat:'action',   emoji:'🔥',  gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
-  { id:14, name:'Color Switch',      cat:'puzzle',   emoji:'🎨',  gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K' },
+  { id:1,  name:'Shadow Striker',    cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K' },
+  { id:2,  name:'Neon Cube',         cat:'puzzle',   color:'#0055C4', gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K'  },
+  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
+  { id:4,  name:'Pixel Basket',      cat:'sports',   color:'#FF8C00', gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K'  },
+  { id:5,  name:'Galactic Blaster',  cat:'arcade',   color:'#5B2BFF', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
+  { id:6,  name:'Empire Builder',    cat:'strategy', color:'#D48A00', gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K'  },
+  { id:7,  name:'Cyber Brawl',       cat:'action',   color:'#A100FF', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
+  { id:8,  name:'Mind Maze',         cat:'puzzle',   color:'#0068B8', gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K'  },
+  { id:9,  name:'Drift King',        cat:'racing',   color:'#2E8B00', gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K' },
+  { id:10, name:'Soccer Stars',      cat:'sports',   color:'#00A5D1', gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K' },
+  { id:11, name:'Retro Invaders',    cat:'arcade',   color:'#9D50FF', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
+  { id:12, name:'War Tactics',       cat:'strategy', color:'#B36A00', gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K'  },
+  { id:13, name:'Fire Warrior',      cat:'action',   color:'#FF3300', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
+  { id:14, name:'Color Switch',      cat:'puzzle',   color:'#0057B8', gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K' },
 ];
 
 const TRENDING = [
-  { id:3,  name:'Turbo Rush 3D',    emoji:'🏎️', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
-  { id:13, name:'Fire Warrior',     emoji:'🔥', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
-  { id:11, name:'Retro Invaders',   emoji:'👾', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
-  { id:5,  name:'Galactic Blaster', emoji:'🚀', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
-  { id:7,  name:'Cyber Brawl',      emoji:'🥊', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
+  { id:3,  name:'Turbo Rush 3D',    color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
+  { id:13, name:'Fire Warrior',     color:'#FF3300', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
+  { id:11, name:'Retro Invaders',   color:'#9D50FF', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
+  { id:5,  name:'Galactic Blaster', color:'#5B2BFF', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
+  { id:7,  name:'Cyber Brawl',      color:'#A100FF', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
 ];
 
 const LEADERBOARD = [
@@ -1377,13 +1479,35 @@ const LEADERBOARD = [
   { rank:10, name:'LightSpeed_Z',  score:21450, games:87  },
 ];
 
+function createGameIconUrl(game) {
+  const label = game.name.split(' ').slice(0, 2).map(word => word[0]).join('').toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><defs><linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${game.color}"/><stop offset="100%" stop-color="#09091a"/></linearGradient></defs><rect x="0" y="0" width="140" height="140" rx="28" fill="url(%23iconGrad)"/><text x="50%" y="56%" text-anchor="middle" dominant-baseline="middle" font-family="Orbitron, sans-serif" font-size="44" fill="#fff">${label}</text></svg>`;
+  return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
+function createGameFrameUrl(game) {
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${game.name}</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:${game.gradient};color:#fff;font-family:Arial,sans-serif;text-align:center;} .card{padding:32px;border-radius:30px;background:rgba(0,0,0,0.35);box-shadow:0 0 60px rgba(0,0,0,0.35);} h1{font-size:2.4rem;margin:0 0 0.6rem;} p{font-size:1rem;opacity:0.85;line-height:1.6;max-width:420px;margin:0 auto;}</style></head><body><div class="card"><h1>${game.name}</h1><p>This preview iframe is styled for the embedded game experience. Replace the URL with your actual game source for production.</p></div></body></html>`;
+  return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+}
+
 /* ============================================================
    RENDER FUNCTIONS
 ============================================================ */
 function renderGames(filter = 'all') {
   const grid = document.getElementById('games-grid');
+  const searchValue = document.getElementById('game-search')?.value.trim().toLowerCase() || '';
   grid.innerHTML = '';
-  const filtered = filter === 'all' ? GAMES : GAMES.filter(g => g.cat === filter);
+  const filtered = GAMES.filter(g => {
+    const matchesCategory = filter === 'all' || g.cat === filter;
+    const matchesSearch = searchValue === '' || g.name.toLowerCase().includes(searchValue);
+    return matchesCategory && matchesSearch;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="no-results">No games match your search. Try a different keyword or category.</div>`;
+    return;
+  }
+
   filtered.forEach((g, i) => {
     const card = document.createElement('div');
     card.className = 'game-card';
@@ -1391,7 +1515,7 @@ function renderGames(filter = 'all') {
     card.dataset.cat = g.cat;
     card.innerHTML = `
       <div class="game-thumb" style="background:${g.gradient};">
-        <span style="filter:drop-shadow(0 0 12px rgba(255,255,255,0.4))">${g.emoji}</span>
+        <img class="game-icon" src="${createGameIconUrl(g)}" alt="${g.name} icon" />
       </div>
       <div class="game-info">
         <div class="game-name">${g.name}</div>
@@ -1410,9 +1534,9 @@ function renderTrending() {
     card.className = 'trending-card';
     card.onclick = () => openGame(g.id);
     card.innerHTML = `
-      <div class="hot-badge">🔥 HOT</div>
+      <div class="hot-badge"><i class="fas fa-fire"></i> HOT</div>
       <div class="trending-thumb" style="background:${g.gradient};">
-        <span style="filter:drop-shadow(0 0 10px rgba(255,255,255,0.4))">${g.emoji}</span>
+        <img class="game-icon" src="${createGameIconUrl(g)}" alt="${g.name} icon" />
       </div>
       <div class="trending-info">
         <div class="trending-name">${g.name}</div>
@@ -1440,7 +1564,7 @@ function renderLeaderboard() {
   LEADERBOARD.forEach(p => {
     const tr = document.createElement('tr');
     if (p.rank <= 3) tr.className = `rank-${p.rank}`;
-    const icon = p.rank === 1 ? '👑' : p.rank === 2 ? '🥈' : p.rank === 3 ? '🥉' : `#${p.rank}`;
+    const icon = p.rank === 1 ? '<i class="fas fa-trophy"></i>' : p.rank === 2 ? '<i class="fas fa-medal"></i>' : p.rank === 3 ? '<i class="fas fa-award"></i>' : `#${p.rank}`;
     tr.innerHTML = `
       <td><span class="rank-icon">${icon}</span></td>
       <td>${p.name}</td>
@@ -1459,6 +1583,11 @@ document.getElementById('filter-tabs').addEventListener('click', e => {
   document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
   renderGames(tab.dataset.cat);
+});
+
+document.getElementById('game-search').addEventListener('input', () => {
+  const activeTab = document.querySelector('.filter-tab.active');
+  renderGames(activeTab?.dataset.cat || 'all');
 });
 
 /* ============================================================
@@ -1516,7 +1645,7 @@ function handleLogin() {
 
   // Simulate login success
   const ud = document.getElementById('user-display');
-  ud.textContent = `👤 ${username}`;
+  ud.textContent = `User: ${username}`;
   ud.style.display = 'inline';
   closeLoginModal();
 }
@@ -1531,26 +1660,39 @@ function openGame(id) {
   const game = GAMES.find(g => g.id === id);
   if (!game) return;
 
-  document.getElementById('game-modal-title').textContent = game.emoji + ' ' + game.name;
+  document.getElementById('game-modal-title').textContent = game.name;
+  const iframe = document.getElementById('game-frame');
+  iframe.src = createGameFrameUrl(game);
+  iframe.onload = () => {
+    document.getElementById('game-loading').style.display = 'none';
+    document.getElementById('game-frame-wrap').style.display = 'block';
+  };
+
   document.getElementById('game-modal').classList.add('open');
   document.getElementById('game-loading').style.display = 'flex';
-  document.getElementById('game-canvas-wrap').style.display = 'none';
-  document.getElementById('game-hud').style.display = 'none';
-  document.getElementById('game-instructions').textContent = '';
+  document.getElementById('game-frame-wrap').style.display = 'none';
+  document.getElementById('game-instructions').textContent = 'Use fullscreen for the best experience, then enjoy the game inside the embed.';
+}
 
-  // Show loading then start game
-  setTimeout(() => {
-    document.getElementById('game-loading').style.display = 'none';
-    document.getElementById('game-canvas-wrap').style.display = 'block';
-    document.getElementById('game-hud').style.display = 'flex';
-    document.getElementById('game-instructions').textContent = '🖱️  Click the glowing targets before they disappear! Each hit = +10 points.';
-    startMiniGame();
-  }, 1500);
+function requestGameFullscreen() {
+  const frameWrap = document.getElementById('game-frame-wrap');
+  if (!frameWrap) return;
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+    return;
+  }
+  if (frameWrap.requestFullscreen) frameWrap.requestFullscreen();
+  else if (frameWrap.webkitRequestFullscreen) frameWrap.webkitRequestFullscreen();
+  else if (frameWrap.msRequestFullscreen) frameWrap.msRequestFullscreen();
 }
 
 function closeGameModal() {
   document.getElementById('game-modal').classList.remove('open');
-  stopMiniGame();
+  const iframe = document.getElementById('game-frame');
+  if (iframe) {
+    iframe.src = '';
+    iframe.onload = null;
+  }
 }
 document.getElementById('game-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('game-modal')) closeGameModal();
@@ -1762,6 +1904,7 @@ function stopMiniGame() {
   if (gameLoop) { cancelAnimationFrame(gameLoop); gameLoop = null; }
   if (gameState) { gameState.running = false; }
   const canvas = document.getElementById('game-canvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (canvas.onclick) canvas.onclick = null;
