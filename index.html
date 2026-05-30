@@ -1442,7 +1442,7 @@
    GAME DATA
 ============================================================ */
 const GAMES = [
-  { id:1,  name:'Shadow',    cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K' },
+  { id:1,  name:'Temple Run',    cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K' },
   { id:2,  name:'Neon Cube',         cat:'puzzle',   color:'#0055C4', gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K'  },
   { id:3,  name:'Turbo Rush 3D',     cat:'racing',   color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
   { id:4,  name:'Pixel Basket',      cat:'sports',   color:'#FF8C00', gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K'  },
@@ -1486,7 +1486,7 @@ function createGameIconUrl(game) {
 }
 
 function createGameFrameUrl(game) {
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${game.name}</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:${game.gradient};color:#fff;font-family:Arial,sans-serif;text-align:center;} .card{padding:32px;border-radius:30px;background:rgba(0,0,0,0.35);box-shadow:0 0 60px rgba(0,0,0,0.35);} h1{font-size:2.4rem;margin:0 0 0.6rem;} p{font-size:1rem;opacity:0.85;line-height:1.6;max-width:420px;margin:0 auto;}</style></head><body><div class="card"><h1>${game.name}</h1><p>This preview iframe is styled for the embedded game experience. Replace the URL with your actual game source for production.</p></div></body></html>`;
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${game.name}</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:${game.gradient};color:#fff;font-family:Arial,sans-serif;text-align:center;} .card{padding:32px;border-radius:30px;background:rgba(0,0,0,0.35);box-shadow:0 0 60px rgba(0,0,0,0.35);} h1{font-size:2.4rem;margin:0 0 0.6rem;} p{font-size:1rem;opacity:0.85;line-height:1.6;max-width:420px;margin:0 auto;}<\/style><\/head><body><div class="card"><h1>${game.name}</h1><p>This preview iframe is styled for the embedded game experience. Replace the URL with your actual game source for production.</p></div><\/body><\/html>`;
   return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
 }
 
