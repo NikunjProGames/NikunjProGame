@@ -545,6 +545,15 @@
       border: 2px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.05);
     }
+    .game-thumb img.custom-game-image,
+    .trending-thumb img.custom-game-image {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      object-fit: cover;
+    }
 
     .game-info { padding: 1rem; display: flex; flex-direction: column; flex: 1; gap: 0.75rem; }
 
@@ -1200,7 +1209,6 @@
         src=""
         allow="fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        loading="lazy"
         frameborder="0"
         title="Game Preview"></iframe>
       <button class="fullscreen-btn" onclick="requestGameFullscreen()"><i class="fas fa-expand"></i> Fullscreen</button>
@@ -1442,20 +1450,20 @@
    GAME DATA
 ============================================================ */
 const GAMES = [
-  { id:1,  name:'Temple Run',        cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K', iframeUrl:'https://html5.gamemonetize.co/pkyyuilfrqkcdnmrxsg60j22ypk0peje/' },
-  { id:2,  name:'Neon Cube',         cat:'puzzle',   color:'#0055C4', gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K',  iframeUrl:'' },
-  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K', iframeUrl:'' },
-  { id:4,  name:'Pixel Basket',      cat:'sports',   color:'#FF8C00', gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K',  iframeUrl:'' },
-  { id:5,  name:'Galactic Blaster',  cat:'arcade',   color:'#5B2BFF', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K', iframeUrl:'' },
-  { id:6,  name:'Empire Builder',    cat:'strategy', color:'#D48A00', gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K',  iframeUrl:'' },
-  { id:7,  name:'Cyber Brawl',       cat:'action',   color:'#A100FF', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K', iframeUrl:'' },
-  { id:8,  name:'Mind Maze',         cat:'puzzle',   color:'#0068B8', gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K',  iframeUrl:'' },
-  { id:9,  name:'Drift King',        cat:'racing',   color:'#2E8B00', gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K', iframeUrl:'' },
-  { id:10, name:'Soccer Stars',      cat:'sports',   color:'#00A5D1', gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K', iframeUrl:'' },
-  { id:11, name:'Retro Invaders',    cat:'arcade',   color:'#9D50FF', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K', iframeUrl:'' },
-  { id:12, name:'War Tactics',       cat:'strategy', color:'#B36A00', gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K',  iframeUrl:'' },
-  { id:13, name:'Fire Warrior',      cat:'action',   color:'#FF3300', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K', iframeUrl:'' },
-  { id:14, name:'Color Switch',      cat:'puzzle',   color:'#0057B8', gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K', iframeUrl:'' },
+  { id:1,  name:'Temple Run',        cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K', imageUrl:'', iframeUrl:'https://html5.gamemonetize.co/pkyyuilfrqkcdnmrxsg60j22ypk0peje/' },
+  { id:2,  name:'Neon Cube',         cat:'puzzle',   color:'#0055C4', gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K',  imageUrl:'', iframeUrl:'' },
+  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K', imageUrl:'', iframeUrl:'' },
+  { id:4,  name:'Pixel Basket',      cat:'sports',   color:'#FF8C00', gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K',  imageUrl:'', iframeUrl:'' },
+  { id:5,  name:'Galactic Blaster',  cat:'arcade',   color:'#5B2BFF', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K', imageUrl:'', iframeUrl:'' },
+  { id:6,  name:'Empire Builder',    cat:'strategy', color:'#D48A00', gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K',  imageUrl:'', iframeUrl:'' },
+  { id:7,  name:'Cyber Brawl',       cat:'action',   color:'#A100FF', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K', imageUrl:'', iframeUrl:'' },
+  { id:8,  name:'Mind Maze',         cat:'puzzle',   color:'#0068B8', gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K',  imageUrl:'', iframeUrl:'' },
+  { id:9,  name:'Drift King',        cat:'racing',   color:'#2E8B00', gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K', imageUrl:'', iframeUrl:'' },
+  { id:10, name:'Soccer Stars',      cat:'sports',   color:'#00A5D1', gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K', imageUrl:'', iframeUrl:'' },
+  { id:11, name:'Retro Invaders',    cat:'arcade',   color:'#9D50FF', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K', imageUrl:'', iframeUrl:'' },
+  { id:12, name:'War Tactics',       cat:'strategy', color:'#B36A00', gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K',  imageUrl:'', iframeUrl:'' },
+  { id:13, name:'Fire Warrior',      cat:'action',   color:'#FF3300', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K', imageUrl:'', iframeUrl:'' },
+  { id:14, name:'Color Switch',      cat:'puzzle',   color:'#0057B8', gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K', imageUrl:'', iframeUrl:'' },
 ];
 
 const TRENDING = [
@@ -1483,6 +1491,13 @@ function createGameIconUrl(game) {
   const label = game.name.split(' ').slice(0, 2).map(word => word[0]).join('').toUpperCase();
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><defs><linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${game.color}"/><stop offset="100%" stop-color="#09091a"/></linearGradient></defs><rect x="0" y="0" width="140" height="140" rx="28" fill="url(%23iconGrad)"/><text x="50%" y="56%" text-anchor="middle" dominant-baseline="middle" font-family="Orbitron, sans-serif" font-size="44" fill="#fff">${label}</text></svg>`;
   return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+}
+
+function createGameImageMarkup(game) {
+  const imageUrl = game.imageUrl && game.imageUrl.trim();
+  const src = imageUrl || createGameIconUrl(game);
+  const className = imageUrl ? 'game-icon custom-game-image' : 'game-icon';
+  return `<img class="${className}" src="${src}" alt="${game.name} image" />`;
 }
 
 function createGameFrameUrl(game) {
@@ -1519,7 +1534,7 @@ function renderGames(filter = 'all') {
     card.dataset.cat = g.cat;
     card.innerHTML = `
       <div class="game-thumb" style="background:${g.gradient};">
-        <img class="game-icon" src="${createGameIconUrl(g)}" alt="${g.name} icon" />
+        ${createGameImageMarkup(g)}
       </div>
       <div class="game-info">
         <div class="game-name">${g.name}</div>
@@ -1534,13 +1549,14 @@ function renderTrending() {
   const row = document.getElementById('trending-row');
   row.innerHTML = '';
   TRENDING.forEach(g => {
+    const game = GAMES.find(item => item.id === g.id) || g;
     const card = document.createElement('div');
     card.className = 'trending-card';
     card.onclick = () => openGame(g.id);
     card.innerHTML = `
       <div class="hot-badge"><i class="fas fa-fire"></i> HOT</div>
       <div class="trending-thumb" style="background:${g.gradient};">
-        <img class="game-icon" src="${createGameIconUrl(g)}" alt="${g.name} icon" />
+        ${createGameImageMarkup(game)}
       </div>
       <div class="trending-info">
         <div class="trending-name">${g.name}</div>
@@ -1659,6 +1675,12 @@ function handleLogin() {
 ============================================================ */
 let gameLoop = null;
 let gameState = {};
+let gameLoadTimer = null;
+
+function showGameFrame() {
+  document.getElementById('game-loading').style.display = 'none';
+  document.getElementById('game-frame-wrap').style.display = 'block';
+}
 
 function openGame(id) {
   const game = GAMES.find(g => g.id === id);
@@ -1666,16 +1688,16 @@ function openGame(id) {
 
   document.getElementById('game-modal-title').textContent = game.name;
   const iframe = document.getElementById('game-frame');
-  iframe.src = createGameFrameUrl(game);
-  iframe.onload = () => {
-    document.getElementById('game-loading').style.display = 'none';
-    document.getElementById('game-frame-wrap').style.display = 'block';
-  };
-
   document.getElementById('game-modal').classList.add('open');
   document.getElementById('game-loading').style.display = 'flex';
   document.getElementById('game-frame-wrap').style.display = 'none';
   document.getElementById('game-instructions').textContent = 'Use fullscreen for the best experience, then enjoy the game inside the embed.';
+
+  if (gameLoadTimer) clearTimeout(gameLoadTimer);
+  iframe.onload = showGameFrame;
+  iframe.src = createGameFrameUrl(game);
+
+  gameLoadTimer = setTimeout(showGameFrame, 2500);
 }
 
 function requestGameFullscreen() {
@@ -1692,6 +1714,10 @@ function requestGameFullscreen() {
 
 function closeGameModal() {
   document.getElementById('game-modal').classList.remove('open');
+  if (gameLoadTimer) {
+    clearTimeout(gameLoadTimer);
+    gameLoadTimer = null;
+  }
   const iframe = document.getElementById('game-frame');
   if (iframe) {
     iframe.src = '';
