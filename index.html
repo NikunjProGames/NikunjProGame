@@ -1442,20 +1442,20 @@
    GAME DATA
 ============================================================ */
 const GAMES = [
-  { id:1,  name:'Temple Run',    cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K' },
-  { id:2,  name:'Neon Cube',         cat:'puzzle',   color:'#0055C4', gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K'  },
-  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K' },
-  { id:4,  name:'Pixel Basket',      cat:'sports',   color:'#FF8C00', gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K'  },
-  { id:5,  name:'Galactic Blaster',  cat:'arcade',   color:'#5B2BFF', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K' },
-  { id:6,  name:'Empire Builder',    cat:'strategy', color:'#D48A00', gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K'  },
-  { id:7,  name:'Cyber Brawl',       cat:'action',   color:'#A100FF', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K' },
-  { id:8,  name:'Mind Maze',         cat:'puzzle',   color:'#0068B8', gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K'  },
-  { id:9,  name:'Drift King',        cat:'racing',   color:'#2E8B00', gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K' },
-  { id:10, name:'Soccer Stars',      cat:'sports',   color:'#00A5D1', gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K' },
-  { id:11, name:'Retro Invaders',    cat:'arcade',   color:'#9D50FF', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K' },
-  { id:12, name:'War Tactics',       cat:'strategy', color:'#B36A00', gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K'  },
-  { id:13, name:'Fire Warrior',      cat:'action',   color:'#FF3300', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K' },
-  { id:14, name:'Color Switch',      cat:'puzzle',   color:'#0057B8', gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K' },
+  { id:1,  name:'Temple Run',        cat:'action',   color:'#8B00FF', gradient:'linear-gradient(135deg,#1a0030,#4a0080)', players:'12.4K', iframeUrl:'https://html5.gamemonetize.co/pkyyuilfrqkcdnmrxsg60j22ypk0peje/' },
+  { id:2,  name:'Neon Cube',         cat:'puzzle',   color:'#0055C4', gradient:'linear-gradient(135deg,#001a3a,#004080)', players:'9.1K',  iframeUrl:'' },
+  { id:3,  name:'Turbo Rush 3D',     cat:'racing',   color:'#008840', gradient:'linear-gradient(135deg,#003300,#006600)', players:'18.7K', iframeUrl:'' },
+  { id:4,  name:'Pixel Basket',      cat:'sports',   color:'#FF8C00', gradient:'linear-gradient(135deg,#3a1a00,#804000)', players:'7.3K',  iframeUrl:'' },
+  { id:5,  name:'Galactic Blaster',  cat:'arcade',   color:'#5B2BFF', gradient:'linear-gradient(135deg,#1a003a,#500090)', players:'22.1K', iframeUrl:'' },
+  { id:6,  name:'Empire Builder',    cat:'strategy', color:'#D48A00', gradient:'linear-gradient(135deg,#3a2000,#805000)', players:'5.8K',  iframeUrl:'' },
+  { id:7,  name:'Cyber Brawl',       cat:'action',   color:'#A100FF', gradient:'linear-gradient(135deg,#300030,#800060)', players:'14.2K', iframeUrl:'' },
+  { id:8,  name:'Mind Maze',         cat:'puzzle',   color:'#0068B8', gradient:'linear-gradient(135deg,#002030,#005080)', players:'6.5K',  iframeUrl:'' },
+  { id:9,  name:'Drift King',        cat:'racing',   color:'#2E8B00', gradient:'linear-gradient(135deg,#1a2000,#405000)', players:'11.9K', iframeUrl:'' },
+  { id:10, name:'Soccer Stars',      cat:'sports',   color:'#00A5D1', gradient:'linear-gradient(135deg,#003320,#006040)', players:'16.3K', iframeUrl:'' },
+  { id:11, name:'Retro Invaders',    cat:'arcade',   color:'#9D50FF', gradient:'linear-gradient(135deg,#250040,#600090)', players:'19.8K', iframeUrl:'' },
+  { id:12, name:'War Tactics',       cat:'strategy', color:'#B36A00', gradient:'linear-gradient(135deg,#2a1500,#604000)', players:'8.7K',  iframeUrl:'' },
+  { id:13, name:'Fire Warrior',      cat:'action',   color:'#FF3300', gradient:'linear-gradient(135deg,#3a0010,#8a0020)', players:'20.5K', iframeUrl:'' },
+  { id:14, name:'Color Switch',      cat:'puzzle',   color:'#0057B8', gradient:'linear-gradient(135deg,#001530,#003080)', players:'13.1K', iframeUrl:'' },
 ];
 
 const TRENDING = [
@@ -1486,6 +1486,10 @@ function createGameIconUrl(game) {
 }
 
 function createGameFrameUrl(game) {
+  if (game.iframeUrl && game.iframeUrl.trim()) {
+    return game.iframeUrl.trim();
+  }
+
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${game.name}</title><style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:${game.gradient};color:#fff;font-family:Arial,sans-serif;text-align:center;} .card{padding:32px;border-radius:30px;background:rgba(0,0,0,0.35);box-shadow:0 0 60px rgba(0,0,0,0.35);} h1{font-size:2.4rem;margin:0 0 0.6rem;} p{font-size:1rem;opacity:0.85;line-height:1.6;max-width:420px;margin:0 auto;}<\/style><\/head><body><div class="card"><h1>${game.name}</h1><p>This preview iframe is styled for the embedded game experience. Replace the URL with your actual game source for production.</p></div><\/body><\/html>`;
   return 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
 }
