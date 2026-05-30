@@ -909,6 +909,30 @@
       display: block;
       background: #050510;
     }
+    #game-frame-wrap:fullscreen,
+    #game-frame-wrap:-webkit-full-screen {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      border: 0;
+      border-radius: 0;
+      background: #000;
+    }
+    #game-frame-wrap:fullscreen #game-frame,
+    #game-frame-wrap:-webkit-full-screen #game-frame {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+    }
+    #game-frame-wrap:fullscreen .fullscreen-btn,
+    #game-frame-wrap:-webkit-full-screen .fullscreen-btn {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 10;
+      margin: 0;
+      background: rgba(0,0,0,0.7);
+    }
     .game-hud {
       display: none;
       gap: 2rem;
